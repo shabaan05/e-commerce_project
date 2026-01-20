@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Wireless Bluetooth Headphones",
+    "price": 2999,
+    "description": "Over-ear headphones with noise cancellation and long battery life",
+    "categoryName": "Electronics",
+    "stock": 50
+  },
+  {
+    "name": "Smart Watch",
+    "price": 4999,
+    "description": "Fitness tracking smart watch with heart rate monitor",
+    "categoryName": "Electronics",
+    "stock": 30
+  },
+  {
+    "name": "Men's Cotton T-Shirt",
+    "price": 699,
+    "description": "Comfortable round-neck cotton t-shirt",
+    "categoryName": "Clothing",
+    "stock": 100
+  },
+  {
+    "name": "Women's Denim Jeans",
+    "price": 1499,
+    "description": "Slim-fit blue denim jeans",
+    "categoryName": "Clothing",
+    "stock": 60
+  },
+  {
+    "name": "Non-stick Cooking Pan",
+    "price": 1299,
+    "description": "High-quality non-stick frying pan",
+    "categoryName": "Home & Kitchen",
+    "stock": 40
+  },
+  {
+    "name": "Ceramic Dinner Plate Set",
+    "price": 899,
+    "description": "Set of 6 ceramic plates for everyday use",
+    "categoryName": "Home & Kitchen",
+    "stock": 70
+  },
+  {
+    "name": "Motivational Self-Help Book",
+    "price": 399,
+    "description": "Improve your life with actionable tips",
+    "categoryName": "Books",
+    "stock": 60
+  },
+  {
+    "name": "Science Fiction Novel",
+    "price": 499,
+    "description": "Exciting sci-fi adventure",
+    "categoryName": "Books",
+    "stock": 50
+  },
+  {
+    "name": "Yoga Mat",
+    "price": 799,
+    "description": "Non-slip yoga mat for all exercises",
+    "categoryName": "Sports",
+    "stock": 80
+  },
+  {
+    "name": "Dumbbell Set",
+    "price": 2499,
+    "description": "Adjustable dumbbells for home workouts",
+    "categoryName": "Sports",
+    "stock": 20
+  },
+  {
+    "name": "Laptop Backpack",
+    "price": 1599,
+    "description": "Durable backpack with padded laptop compartment",
+    "categoryName": "Electronics",
+    "stock": 35
+  },
+  {
+    "name": "Bluetooth Speaker",
+    "price": 2199,
+    "description": "Portable speaker with powerful bass",
+    "categoryName": "Electronics",
+    "stock": 40
+  },
+  {
+    "name": "Men's Running Shoes",
+    "price": 1999,
+    "description": "Lightweight and comfortable running shoes",
+    "categoryName": "Clothing",
+    "stock": 70
+  },
+  {
+    "name": "Women's Sports Leggings",
+    "price": 1299,
+    "description": "Breathable leggings for workouts",
+    "categoryName": "Clothing",
+    "stock": 60
+  },
+  {
+    "name": "Stainless Steel Knife Set",
+    "price": 1799,
+    "description": "Professional kitchen knife set",
+    "categoryName": "Home & Kitchen",
+    "stock": 25
+  },
+  {
+    "name": "Electric Kettle",
+    "price": 1299,
+    "description": "Quick-boil electric kettle with auto shut-off",
+    "categoryName": "Home & Kitchen",
+    "stock": 45
+  },
+  {
+    "name": "Thriller Novel",
+    "price": 449,
+    "description": "Page-turner crime thriller",
+    "categoryName": "Books",
+    "stock": 50
+  },
+  {
+    "name": "Children's Story Book",
+    "price": 299,
+    "description": "Fun and educational stories for kids",
+    "categoryName": "Books",
+    "stock": 70
+  },
+  {
+    "name": "Tennis Racket",
+    "price": 2999,
+    "description": "Lightweight tennis racket for beginners",
+    "categoryName": "Sports",
+    "stock": 15
+  },
+  {
+    "name": "Fitness Resistance Bands",
+    "price": 599,
+    "description": "Set of 5 resistance bands for strength training",
+    "categoryName": "Sports",
+    "stock": 90
+  }
+]

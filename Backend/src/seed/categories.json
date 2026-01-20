@@ -1,0 +1,7 @@
+[
+  { "name": "Electronics", "slug": "electronics" },
+  { "name": "Clothing", "slug": "clothing" },
+  { "name": "Home & Kitchen", "slug": "home-kitchen" },
+  { "name": "Books", "slug": "books" },
+  { "name": "Sports", "slug": "sports" }
+]

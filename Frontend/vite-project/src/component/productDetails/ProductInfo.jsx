@@ -1,0 +1,35 @@
+import React from "react";
+import { useCart } from "../../context/CartContext"; // adjust path if needed
+
+const ProductInfo = ({ product, quantity, setQuantity }) => {
+  const { addToCart } = useCart(); // get addToCart from context
+
+  const handleAddToCart = () => {
+    addToCart({ ...product, qty: quantity }); // include selected quantity
+    alert(`${product.name} (${quantity}) added to cart!`); // optional feedback
+  };
+
+  return (
+    <div className="w-1/2 space-y-4">
+      <h1 className="text-2xl font-bold">{product.name}</h1>
+      <p className="text-xl">₹{product.price}</p>
+
+      <div className="flex items-center gap-3">
+        <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+          -
+        </button>
+        <span>{quantity}</span>
+        <button onClick={() => setQuantity(quantity + 1)}>+</button>
+      </div>
+
+      <button
+        className="px-4 py-2 bg-black text-white"
+        onClick={handleAddToCart} // added this
+      >
+        Add to Cart
+      </button>
+    </div>
+  );
+};
+
+export default ProductInfo;

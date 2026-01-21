@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { login } from "../services/authService";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { login as loginService } from "../services/authService";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,10 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const { login } = useAuth(); // ✅ context login
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     setFormData({
@@ -25,30 +31,32 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const data = await login({
-  email: formData.email,
-  password: formData.password,
-});
 
-      // store token (temporary, context comes later)
-      localStorage.setItem("token", data.token);
+      // 1️⃣ Call backend login API
+      const data = await loginService({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // 2️⃣ Update global auth state
+      login(data.user, data.token);
 
       setSuccess("Login successful");
-      setUser(data.user); // from context
-      console.log("Logged in user:", data);
-//..logout
-      const logout = () => {
-  localStorage.removeItem("token");
-  setUser(null);
-};
+
+      // 3️⃣ Redirect user back (checkout / profile / home)
+      const redirectTo = location.state?.from?.pathname || "/";
+      navigate(redirectTo, { replace: true });
 
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Login failed"
+      );
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex justify-center items-center min-h-screen">
       <form

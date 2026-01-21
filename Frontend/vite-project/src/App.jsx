@@ -12,6 +12,7 @@ import Payment from './pages/Payment';
 import Orders from './pages/Orders';
 import Register from './pages/Register';
 import ProtectedRoute from './component/routes/ProtectedRoute'
+import Profile from './pages/Profile';
 function App() {
 
   return (
@@ -23,6 +24,14 @@ function App() {
       <Route path="/cart" element={
         <ProtectedRoute> <Cart /></ProtectedRoute>
         } />
+        <Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
        <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
        <Route path="/product/:id" element={<ProductDetails />} />

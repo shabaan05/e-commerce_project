@@ -4,6 +4,8 @@ import React from "react";
 const CartItem = ({ item, removeItem, updateQty }) => (
   <div className="cart-item">
     <p>{item.name}</p>
+            <p>₹{item.price}</p>
+
     <input
       type="number"
       value={item.qty}

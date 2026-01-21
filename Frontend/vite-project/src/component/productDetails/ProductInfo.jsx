@@ -4,9 +4,13 @@ import { useCart } from "../../context/CartContext"; // adjust path if needed
 const ProductInfo = ({ product, quantity, setQuantity }) => {
   const { addToCart } = useCart(); // get addToCart from context
 
-  const handleAddToCart = () => {
-    addToCart({ ...product, qty: quantity }); // include selected quantity
-    alert(`${product.name} (${quantity}) added to cart!`); // optional feedback
+    const handleAddToCart = () => {
+    addToCart({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
   };
 
   return (
@@ -33,3 +37,4 @@ const ProductInfo = ({ product, quantity, setQuantity }) => {
 };
 
 export default ProductInfo;
+

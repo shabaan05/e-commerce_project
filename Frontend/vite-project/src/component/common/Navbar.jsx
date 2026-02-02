@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; 
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth(); 
+  const { user, logout } = useAuth(); 
 
   return (
     <nav>
@@ -11,7 +11,7 @@ const Navbar = () => {
       <Link to="/cart">Cart</Link>
 
       {/* Show only after login */}
-      {isAuthenticated && (
+      {user && (
         <>
           <Link to="/profile">Profile</Link>
           <Link to="/orders">My Orders</Link>
@@ -20,12 +20,17 @@ const Navbar = () => {
       )}
 
       {/* Show only when logged out */}
-      {!isAuthenticated && (
+      {!user && (
         <>
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
         </>
       )}
+
+       {/* 👇 ADMIN LINK */}
+          {user.role === "admin" && (
+            <Link to="/admin">Admin</Link>
+          )}
     </nav>
   );
 };

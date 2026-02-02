@@ -13,7 +13,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const { login } = useAuth(); // ✅ context login
+  const { login } = useAuth(); // context login
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,10 +39,11 @@ const Login = () => {
       });
 
       // 2️⃣ Update global auth state
-      login(data.user, data.token);
+      // login(data.user, data.token);
+           login(data);
 
       setSuccess("Login successful");
-
+         console.log("successful")
       // 3️⃣ Redirect user back (checkout / profile / home)
       const redirectTo = location.state?.from?.pathname || "/";
       navigate(redirectTo, { replace: true });

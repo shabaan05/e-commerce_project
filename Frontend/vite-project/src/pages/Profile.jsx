@@ -1,38 +1,34 @@
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import EditProfile from "./EditProfile";
 
 const Profile = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-96 border rounded-md p-6 shadow">
-        <h2 className="text-2xl font-bold mb-4 text-center">
-          Profile
-        </h2>
+    <div className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">My Profile</h2>
 
-        {/* User Info */}
-        <div className="mb-4 text-center">
-          <p className="font-semibold">Logged in</p>
-          <p className="text-sm text-gray-600">
-            Token-based session
-          </p>
-        </div>
+      {!isEditing ? (
+        <>
+          <p><b>Name:</b> {user.name}</p>
+          <p><b>Email:</b> {user.email}</p>
+          <p><b>Phone:</b> {user.phone || "Not added"}</p>
+<p><b>Address:</b></p>
+<p>{user.address?.street || "Not added"}</p>
+<p>{user.address?.country || ""}</p>
 
-        {/* Logout */}
-        <button
-          onClick={handleLogout}
-          className="w-full bg-black text-white py-2 rounded hover:opacity-90"
-        >
-          Logout
-        </button>
-      </div>
+          <button
+            onClick={() => setIsEditing(true)}
+            className="mt-4 bg-black text-white px-4 py-2 rounded"
+          >
+            Edit Profile
+          </button>
+        </>
+      ) : (
+        <EditProfile onCancel={() => setIsEditing(false)} />
+      )}
     </div>
   );
 };

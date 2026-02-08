@@ -4,13 +4,13 @@ const AdminSidebar = () => {
   return (
     <aside
       style={{
-        width: "220px",
+        width: "120px",
         padding: "20px",
         backgroundColor: "#111",
         color: "#fff",
       }}
     >
-      <h2>Admin</h2>
+      <h2>Admin sidebar</h2>
 
       <nav>
         <ul style={{ listStyle: "none", padding: 0 }}>

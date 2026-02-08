@@ -20,7 +20,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageProducts from "./pages/admin/ManageProducts";
 import ManageOrders from "./pages/admin/ManageOrders";
 import ManageUsers from "./pages/admin/ManageUsers";
-
+import CreateProduct from "./pages/admin/CreateProduct";
 // Protection
 import ProtectedRoute from "./component/routes/ProtectedRoute";
 function App() {
@@ -30,6 +30,7 @@ function App() {
       <Navbar />
 
       <Routes>
+
         {/* Public */}
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
@@ -76,14 +77,18 @@ function App() {
 
         <Route path="/payment" element={<Payment />} />
 
-        {/* ADMIN ROUTES */}
-        <Route element={<AdminRoute />}>
+        {/* ADMIN ROUTES  */}
+         <Route element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/products" element={<ManageProducts />} />
             <Route path="/admin/orders" element={<ManageOrders />} />
-            <Route path="/admin/users" element={<ManageUsers />} />
-          </Route>
+            <Route path="/admin/users" element={<ManageUsers />} /> 
+           <Route path="/admin/products/create" element={<CreateProduct />} />
+
+
+
+           </Route> 
         </Route>
       </Routes>
 

@@ -50,13 +50,14 @@ const getAllProducts = async (req, res, next) => {
 
     // 4️⃣ Fetch products from DB
     const products = await Product.find(query)
+      .populate("category", "name") // ✅ THIS
       .sort(sortObj)
       .skip(skip)
       .limit(Number(limit));
 
     // 5️⃣ Optional: total count for frontend pagination
     const totalProducts = await Product.countDocuments(query);
-
+console.log("products are: ", products)
     // 6️⃣ Return response
     res.status(200).json({
       page: Number(page),
@@ -64,9 +65,7 @@ const getAllProducts = async (req, res, next) => {
       totalProducts,
       products
     });
-    //....
-    // const products = await Product.find(query);
-    // res.status(200).json(products);
+ 
   } catch (err) {
     next(err);
   }
@@ -88,20 +87,78 @@ const getProductById = async (req, res, next) => {
 // POST create product admin only
 const createProduct = async (req, res, next) => {
   try {
-    const { name, price, category } = req.body;
+    const {
+      name,
+      price,
+      category,
+      countInStock,
+      description,
+      image,
+    } = req.body;
 
-    if (!name || !price)
-      return res.status(400).json({ message: "Name & price required" });
+    // required validation
+    if (!name || !price || !category || countInStock === undefined) {
+      return res.status(400).json({
+        message: "Name, price, category & stock are required",
+      });
+    }
 
-    const product = await Product.create({ name, price, category });
+    const product = await Product.create({
+      name,
+      price,
+      category,
+      countInStock,
+      description: description || "",
+      image: image || "",
+    });
+    console.log("CREATE PRODUCT BODY:", req.body);
+
+
     res.status(201).json(product);
   } catch (err) {
     next(err);
   }
 };
 
+// UPDATE product (admin)
+const updateProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,        // product ID from URL
+      req.body,             // fields to update
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(product);
+  } catch (err) {
+    next(err);
+  }
+};
+// DELETE product (admin)
+const deleteProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+
 module.exports = {
   getAllProducts,
   getProductById,
-  createProduct
+  createProduct,
+  updateProduct,
+  deleteProduct,
 };

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; 
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth(); 
@@ -10,27 +10,26 @@ const Navbar = () => {
       <Link to="/shop">Shop</Link>
       <Link to="/cart">Cart</Link>
 
-      {/* Show only after login */}
-      {user && (
+      {/* Logged in user (user OR admin) */}
+      {user ? (
         <>
           <Link to="/profile">Profile</Link>
           <Link to="/orders">My Orders</Link>
+
+          {/* Admin link */}
+          {user?.role === "admin" && (
+            <Link to="/admin">Admin</Link>
+          )}
+
           <button onClick={logout}>Logout</button>
         </>
-      )}
-
-      {/* Show only when logged out */}
-      {!user && (
+      ) : (
+        /* Logged out */
         <>
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
         </>
       )}
-
-       {/* 👇 ADMIN LINK */}
-          {user.role === "admin" && (
-            <Link to="/admin">Admin</Link>
-          )}
     </nav>
   );
 };

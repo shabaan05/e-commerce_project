@@ -39,12 +39,22 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid credentials" });
 
     const token = jwt.sign(
-      { id: user._id },
+      { id: user._id,
+              role: user.role, 
+
+       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    res.json({ token });
+res.json({
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  role: user.role,   // ✅ required
+  token,
+});
+
   } catch (err) {
     next(err);
   }

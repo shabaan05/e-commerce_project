@@ -1,75 +1,59 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/api";
 
-// 1️⃣ Create context
 const AuthContext = createContext();
 
-// 2️⃣ Provider
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // 🔁 Restore auth on refresh
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-   
-      if (token && storedUser) {
-    api.defaults.headers.Authorization = `Bearer ${token}`;
-    setUser({ ...JSON.parse(storedUser), token });
-  }
+    const storedUser = localStorage.getItem("userInfo");
+
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      api.defaults.headers.Authorization = `Bearer ${parsedUser.token}`;
+      setUser(parsedUser);
+    }
 
     setLoading(false);
   }, []);
 
-  // 🔐 Login
+  // 🔐 Login (NEW response format)
   const login = (data) => {
+    // data = { _id, name, email, role, token }
 
-      const userData = {
-    ...data.user,          // name, email, isAdmin
-    token: data.token,
-    phone: "",             
-    address: "",           
-  };
-    localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(userData));
-
+    localStorage.setItem("userInfo", JSON.stringify(data));
     api.defaults.headers.Authorization = `Bearer ${data.token}`;
-    // setUser(data.user || { token: data.token });
-    setUser({...data.user,token: data.token})
+    setUser(data);
   };
 
   // 🚪 Logout
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     delete api.defaults.headers.Authorization;
     setUser(null);
   };
 
-  //update user
+  // ✏️ Update profile
   const updateProfile = (updates) => {
-  const updatedUser = {
-    ...user,
-    ...updates,
-    address: {
-      ...user.address,
-      ...updates.address,
-    },
+    const updatedUser = {
+      ...user,
+      ...updates,
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem("userInfo", JSON.stringify(updatedUser));
   };
-
-  setUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
-};
-
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, loading,updateProfile }}
+      value={{ user, login, logout, loading, updateProfile }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-// 3️⃣ Custom hook
 export const useAuth = () => useContext(AuthContext);

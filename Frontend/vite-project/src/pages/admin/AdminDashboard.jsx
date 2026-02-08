@@ -1,26 +1,38 @@
+import { useEffect, useState } from "react";
+import { getAdminDashboardStats } from "../../services/adminApi";
 const AdminDashboard = () => {
+  const [stats, setStats] = useState({
+  users: 0,
+  orders: 0,
+  products: 0,
+});
+
+// data is object whoch store al data responded by getdasboboard method in jsn whoch we allot to state by setstate method
+  useEffect(() => {
+      
+    const fetchStats = async () => {
+      const { data } = await getAdminDashboardStats();
+      
+    // console.log("ADMIN DASHBOARD STATS:", data); // tetsing purpose
+    // console.log("FRONTEND RECEIVED:", res.data);
+
+    setStats(prev => ({ ...prev, ...data }));
+
+    };
+
+    fetchStats();
+  });
+
+  // if (!stats) return <p>Loading dashboard...</p>;
+
   return (
-    <div className="p-6">
-      <div>
-        <p>side   bar also include</p>
-      </div>
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+    <div>
+      <h1>Admin Dashboard</h1>
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="border p-4 rounded">
-          <h3 className="text-lg font-semibold">Total Users</h3>
-          <p className="text-2xl font-bold">0</p>
-        </div>
-
-        <div className="border p-4 rounded">
-          <h3 className="text-lg font-semibold">Total Products</h3>
-          <p className="text-2xl font-bold">0</p>
-        </div>
-
-        <div className="border p-4 rounded">
-          <h3 className="text-lg font-semibold">Total Orders</h3>
-          <p className="text-2xl font-bold">0</p>
-        </div>
+      <div style={{ display: "flex", gap: "20px" }}>
+        <div>👤 Users: {stats?.users}</div>
+        <div>📦 Products: {stats?.products}</div>
+        <div>🧾 Orders: {stats?.orders}</div>
       </div>
     </div>
   );

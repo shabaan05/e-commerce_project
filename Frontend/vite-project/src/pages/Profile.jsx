@@ -14,6 +14,7 @@ const Profile = () => {
         <>
           <p><b>Name:</b> {user.name}</p>
           <p><b>Email:</b> {user.email}</p>
+          <p><b>role: </b>{user.role}</p>
           <p><b>Phone:</b> {user.phone || "Not added"}</p>
 <p><b>Address:</b></p>
 <p>{user.address?.street || "Not added"}</p>

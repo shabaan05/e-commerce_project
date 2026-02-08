@@ -37,7 +37,6 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
 
-    // ✅ NEW fields (Day 23–24)
     phone: {
       type: String,
     },

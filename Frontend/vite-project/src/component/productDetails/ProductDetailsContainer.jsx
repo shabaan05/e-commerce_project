@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ProductImage from "./ProductImage";
 import ProductInfo from "./ProductInfo";
 import ProductTabs from "./ProductTabs";
 import { getProductById } from "../../services/productService";
@@ -33,7 +32,6 @@ const ProductDetailsContainer = () => {
   return (
     <div className="p-6">
       <div className="flex gap-6">
-        <ProductImage image={product.image} />
         <ProductInfo
           product={product}
           quantity={quantity}

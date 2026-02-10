@@ -1,57 +1,36 @@
-const Order = require("../models/order.model");
+const Razorpay = require("razorpay");
 
-// INITIATE PAYMENT
-exports.initiatePayment = async (req, res) => {
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+const createOrder = async (req, res) => {
   try {
-    const { orderId, paymentMethod } = req.body;
+    const { amount } = req.body;
 
-    if (!orderId)
-      return res.status(400).json({ message: "Order ID is required" });
+    if (!amount) {
+      return res.status(400).json({ message: "Amount is required" });
+    }
 
-    const order = await Order.findOne({ _id: orderId, user: req.user.id });
+    const options = {
+      amount: amount * 100, // rupees → paise
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+    };
 
-    if (!order)
-      return res.status(404).json({ message: "Order not found" });
+    const order = await razorpay.orders.create(options);
 
-    if (order.paymentStatus === "paid")
-      return res.status(400).json({ message: "Order already paid" });
-
-    // For mock payment, we just return a success token
-    res.json({
-      message: "Payment initiated",
-      orderId: order._id,
-      amount: order.totalAmount,
-      paymentMethod: paymentMethod || "mock",
+    res.status(200).json({
+      success: true,
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Razorpay error:", error);
+    res.status(500).json({ message: "Failed to create order" });
   }
 };
 
-// CONFIRM PAYMENT (MOCK)
-exports.confirmPayment = async (req, res) => {
-  try {
-    const { orderId, success, paymentMethod } = req.body;
-
-    if (!orderId)
-      return res.status(400).json({ message: "Order ID is required" });
-
-    const order = await Order.findOne({ _id: orderId, user: req.user.id });
-
-    if (!order)
-      return res.status(404).json({ message: "Order not found" });
-
-    if (success) {
-      order.paymentStatus = "paid";
-      order.paymentMethod = paymentMethod || "mock";
-      await order.save();
-      return res.json({ message: "Payment successful", order });
-    } else {
-      order.paymentStatus = "failed";
-      await order.save();
-      return res.json({ message: "Payment failed", order });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+module.exports = { createOrder };

@@ -11,6 +11,7 @@ const paymentRoutes = require("./routes/payment.routes");
 const userRoutes = require("./routes/user.routes");
 const adminRoutes = require("./routes/admin.routes");
 const cors = require("cors");
+require("dotenv").config({ path: "../.env" });
 
 // Allow frontend running on port 3000 (React/Vite)
 app.use(cors({ origin: "http://localhost:5173" }));

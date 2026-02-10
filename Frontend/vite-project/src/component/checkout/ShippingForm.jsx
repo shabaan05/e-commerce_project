@@ -1,44 +1,72 @@
+import { useState } from "react";
 import { useCart } from "../../context/CartContext";
 
-const ShippingForm = () => {
-  const { shippingAddress, setShippingAddress } = useCart();
+const ShippingForm = ({ onSaved }) => {
+  const { setShippingAddress } = useCart();
+
+  const [formData, setFormData] = useState({
+    street: "",
+    city: "",
+    country: "",
+    phone: "",
+  });
 
   const handleChange = (e) => {
-    setShippingAddress({
-      ...shippingAddress,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
+  const handleSave = () => {
+    // basic validation
+    if (!formData.street || !formData.phone) return;
+
+    setShippingAddress(formData); // ✅ saved in CartContext + localStorage
+    onSaved(); // close form / show saved address
+  };
+
   return (
-    <div className="border p-4 rounded">
-      <h2 className="text-lg font-semibold mb-4">Shipping Address</h2>
-
+    <div className="border p-4">
       <input
-        type="text"
-        name="name"
-        placeholder="Full Name"
-        value={shippingAddress?.name || ""}
+        name="street"
+        placeholder="Street"
+        value={formData.street}
         onChange={handleChange}
-        className="w-full border p-2 mb-3"
-      />
-
-      <textarea
-        name="address"
-        placeholder="Address"
-        value={shippingAddress?.address || ""}
-        onChange={handleChange}
-        className="w-full border p-2 mb-3"
+        className="border p-2 w-full mb-2"
       />
 
       <input
-        type="tel"
+        name="city"
+        placeholder="City"
+        value={formData.city}
+        onChange={handleChange}
+        className="border p-2 w-full mb-2"
+      />
+
+      <input
+        name="country"
+        placeholder="Country"
+        value={formData.country}
+        onChange={handleChange}
+        className="border p-2 w-full mb-2"
+      />
+
+      <input
         name="phone"
-        placeholder="Phone Number"
-        value={shippingAddress?.phone || ""}
+        placeholder="Phone"
+        value={formData.phone}
         onChange={handleChange}
-        className="w-full border p-2"
+        className="border p-2 w-full mb-4"
       />
+
+      {/* ✅ SAVE BUTTON */}
+      <button
+        onClick={handleSave}
+        className="bg-black text-white px-4 py-2"
+      >
+        Save Address
+      </button>
     </div>
   );
 };

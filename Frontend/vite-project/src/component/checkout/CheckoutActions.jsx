@@ -1,13 +1,52 @@
-import { Link } from "react-router-dom";
+import { createPaymentOrder } from "../../services/paymentService";
 
-const CheckoutActions = () => {
+const PaymentAction = ({ totalAmount }) => {
+
+  const handlePayment = async () => {
+    try {
+      // 1️⃣ Create order in backend
+      const data = await createPaymentOrder(totalAmount);
+
+      const { orderId, amount, currency } = data;
+
+      // 2️⃣ Open Razorpay popup
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: amount,
+        currency: currency,
+        name: "My Store",
+        description: "Order Payment",
+        order_id: orderId,
+
+        handler: function (response) {
+          console.log("Payment Success:", response);
+          /*
+            response contains:
+            - razorpay_payment_id
+            - razorpay_order_id
+            - razorpay_signature
+          */
+        },
+
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("Unable to start payment");
+    }
+  };
+
   return (
-    <Link to="/payment">
-      <button className="w-full bg-black text-white py-3 rounded">
-        Continue to Payment
-      </button>
-    </Link>
+    <button onClick={handlePayment}>
+      Proceed to Payment
+    </button>
   );
 };
 
-export default CheckoutActions;
+export default PaymentAction;

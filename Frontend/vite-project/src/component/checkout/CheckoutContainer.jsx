@@ -1,18 +1,31 @@
-import ShippingForm from "./ShippingForm";
+import { useState } from "react";
 import OrderSummary from "./OrderSummary";
-import CheckoutActions from "./CheckoutActions";
+import SavedAddress from "./SavedAddress";
 
+import AddNewAddress from "./AddNewAddress";
 const CheckoutContainer = () => {
-  return (
-    <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-6">
-      {/* Left */}
-      <ShippingForm />
+  const [showNewAddress, setShowNewAddress] = useState(false);
 
-      {/* Right */}
-      <div className="space-y-4">
-        <OrderSummary />
-        <CheckoutActions />
+  return (
+    <div className="grid grid-cols-2 gap-6 p-6">
+      <div>
+        <SavedAddress onUseAddress={() => {}} />
+
+        {!showNewAddress && (
+          <button
+            onClick={() => setShowNewAddress(true)}
+            className="mb-4 underline"
+          >
+            + Add new address
+          </button>
+        )}
+
+        {showNewAddress && (
+          <AddNewAddress onClose={() => setShowNewAddress(false)} />
+        )}
       </div>
+
+      <OrderSummary />
     </div>
   );
 };

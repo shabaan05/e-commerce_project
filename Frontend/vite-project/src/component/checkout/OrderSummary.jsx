@@ -1,7 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import CheckoutActions from "./CheckoutActions";
-
+// import CheckoutActions from "./CheckoutActions";
+import PaymentActions from "../payment/PaymentActions";
 const OrderSummary = () => {
   const { cartItems, subtotal } = useCart();
   const navigate = useNavigate();
@@ -44,9 +44,11 @@ const OrderSummary = () => {
       </div>
 
       {/* Action */}
-      <CheckoutActions />
+      {/* <CheckoutActions /> */}
+      <PaymentActions />
     </div>
   );
+
 };
 
 export default OrderSummary;

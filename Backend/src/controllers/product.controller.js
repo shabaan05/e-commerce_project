@@ -111,7 +111,6 @@ const createProduct = async (req, res, next) => {
       description: description || "",
       image: image || "",
     });
-    console.log("CREATE PRODUCT BODY:", req.body);
 
 
     res.status(201).json(product);

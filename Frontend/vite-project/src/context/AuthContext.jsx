@@ -25,6 +25,8 @@ export const AuthProvider = ({ children }) => {
     // data = { _id, name, email, role, token }
 
     localStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem("token", data.token);
+
     api.defaults.headers.Authorization = `Bearer ${data.token}`;
     setUser(data);
   };

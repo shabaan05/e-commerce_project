@@ -34,6 +34,5 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 
-// error middleware (ALWAYS last)
 app.use(errorHandler);
 module.exports = app;

@@ -28,19 +28,17 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    orderStatus: {
-      type: String,
-      default: "pending",
-      enum: ["pending", "shipped", "delivered"], // ✅ restrict to allowed values
-    },
+    razorpayOrderId: String,
+  razorpayPaymentId: String,
+   orderStatus: {
+    type: String,
+    enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
+    default: "Pending"
+  },
     paymentStatus: {
       type: String,
       default: "pending",
       enum: ["pending", "paid", "failed"], // ✅ restrict to allowed values
-    },
-    paymentMethod: {
-      type: String,
-      enum: ["card", "UPI", "mock"], // optional: restrict payment methods
     },
   },
   { timestamps: true }

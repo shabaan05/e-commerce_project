@@ -1,17 +1,29 @@
 import React from "react";
 import { useCart } from "../../context/CartContext"; // adjust path if needed
-
+import { useState } from "react";
 const ProductInfo = ({ product }) => {
   const { addToCart } = useCart(); // get addToCart from context
+  const [added, setAdded] = useState(false);
 
-    const handleAddToCart = () => {
-    addToCart({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    });
-  };
+  
+  const handleAddToCart = () => {
+  addToCart({
+    id: product._id,   // ✅ FIXED
+    name: product.name,
+    price: product.price,
+    image: product.image,
+  });
+
+   setAdded(true);
+
+    setTimeout(() => {
+      setAdded(false);
+    }, 2000);
+};
+
+
+   
+  
 
   return (
     <div className="w-1/2 space-y-4">
@@ -19,12 +31,13 @@ const ProductInfo = ({ product }) => {
       <p className="text-xl">₹{product?.price}</p>
 
     
-
-      <button
-        className="px-4 py-2 bg-black text-white"
-        onClick={handleAddToCart} // added this
+  <button
+        onClick={handleAddToCart}
+        className={`mt-4 px-6 py-2 rounded text-white ${
+          added ? "bg-green-600" : "bg-blue-600"
+        }`}
       >
-        Add to Cart
+        {added ? "Added ✓" : "Add to Cart"}
       </button>
     </div>
   );

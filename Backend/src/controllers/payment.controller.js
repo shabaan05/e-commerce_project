@@ -1,6 +1,7 @@
 
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const Order = require("../models/order.model");
 
 
 const createOrder = async (req, res) => {
@@ -37,7 +38,8 @@ const verifyPayment = async (req, res) => {
     const {
       razorpay_order_id,
       razorpay_payment_id,
-      razorpay_signature
+      razorpay_signature,
+      orderId // our DB order ID
     } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -48,14 +50,22 @@ const verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
-      return res.status(200).json({
-        success: true,
-        message: "Payment verified successfully"
+
+      await Order.findByIdAndUpdate(orderId, {
+        razorpayOrderId: razorpay_order_id,
+        razorpayPaymentId: razorpay_payment_id,
+        paymentStatus: "paid"
       });
+
+      return res.json({
+        success: true,
+        message: "Payment verified and order updated"
+      });
+
     } else {
       return res.status(400).json({
         success: false,
-        message: "Invalid payment signature"
+        message: "Invalid signature"
       });
     }
 
@@ -65,7 +75,73 @@ const verifyPayment = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, verifyPayment };
+//..
+
+const createOrderInDB = async (req, res) => {
+  try {
+    const { items, totalAmount, userId } = req.body;
+
+    const order = await Order.create({
+      user: req.user.id,   // 🔥 safer
+
+      items,
+      totalAmount,
+      paymentStatus: "pending"
+    });
+console.log("Incoming body:", req.body);
+
+    res.status(201).json(order);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Order creation failed" });
+  }
+};
+//..
+const getUserOrders = async (req, res) => {
+  const orders = await Order.find({ user: req.user.id })
+    .populate("items.product")
+    .sort({ createdAt: -1 });
+
+  res.json(orders);
+};
+//..
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.orderStatus = status;
+    await order.save();
+
+    res.json({
+      success: true,
+      message: "Order status updated",
+      order
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update order" });
+  }
+};
+//..
+const getAllOrders = async (req, res) => {
+  const orders = await Order.find()
+    .populate("user", "name email")
+    .sort({ createdAt: -1 });
+
+  res.json(orders);
+};
+
+
+module.exports = { createOrder, verifyPayment, createOrderInDB, getUserOrders,updateOrderStatus,getAllOrders };
 
 
 

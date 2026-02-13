@@ -40,32 +40,39 @@ const clearCart = () => {
 //...
 
   // Add item to cart
-  const addToCart = (product) => {
-    const exist = cartItems.find((item) => item.id === product.id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, qty: 1 }]);
-    }
-  };
+ const addToCart = (product) => {
+  const exist = cartItems.find((item) => item.id === product.id);
+console.log("Product:", product);
 
-  // Remove item from cart
-  const removeFromCart = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  // Update quantity
-  const updateQty = (id, qty) => {
+  if (exist) {
     setCartItems(
       cartItems.map((item) =>
-        item.id === id ? { ...item, qty: qty } : item
+        item.id === product.id
+          ? { ...item, qty: item.qty + 1 }
+          : item
       )
     );
-  };
+  } else {
+    setCartItems([...cartItems, { ...product, qty: 1 }]);
+  }
+};
+
+
+  // Remove item from cart
+ const removeFromCart = (id) => {
+  setCartItems(cartItems.filter((item) => item.id !== id));
+};
+
+
+  // Update quantity
+const updateQty = (id, qty) => {
+  setCartItems(
+    cartItems.map((item) =>
+      item.id === id ? { ...item, qty } : item
+    )
+  );
+};
+
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(

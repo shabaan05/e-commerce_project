@@ -12,7 +12,8 @@ import ProductDetails from "./pages/ProductDetails";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
 import Orders from "./pages/Orders";
-
+import OrderSuccess from "./pages/OrderSuccess";
+import OrderFailure from "./pages/OrderFailure";
 // Admin
 import AdminRoute from "./component/routes/AdminRoute";
 import AdminLayout from "./layouts/AdminLayout";
@@ -21,6 +22,7 @@ import ManageProducts from "./pages/admin/ManageProducts";
 import ManageOrders from "./pages/admin/ManageOrders";
 import ManageUsers from "./pages/admin/ManageUsers";
 import CreateProduct from "./pages/admin/CreateProduct";
+import AdminOrders from "./pages/admin/AdminOrders";
 // Protection
 import ProtectedRoute from "./component/routes/ProtectedRoute";
 function App() {
@@ -76,15 +78,25 @@ function App() {
         />
 
         <Route path="/payment" element={<Payment />} />
+<Route path="/order-success" element={<OrderSuccess />} />
+<Route path="/order-failure" element={<OrderFailure />} />
 
         {/* ADMIN ROUTES  */}
          <Route element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/products" element={<ManageProducts />} />
-            <Route path="/admin/orders" element={<ManageOrders />} />
+            {/* <Route path="/admin/orders" element={<ManageOrders />} /> */}
             <Route path="/admin/users" element={<ManageUsers />} /> 
            <Route path="/admin/products/create" element={<CreateProduct />} />
+<Route
+  path="/admin/orders"
+  element={
+    <ProtectedRoute>
+      <AdminOrders />
+    </ProtectedRoute>
+  }
+/>
 
 
 

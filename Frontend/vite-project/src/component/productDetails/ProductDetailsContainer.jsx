@@ -14,8 +14,14 @@ const ProductDetailsContainer = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const data = await getProductById(id);
-        setProduct(data.data || data);
+//         const data = await getProductById(id);
+// setProduct(data.product || data.data || data);
+// console.log("API RESPONSE:", data);
+const data = await getProductById(id);
+console.log("Fetched Product:", data);
+setProduct(data);
+
+
       } catch {
         setError("Product not found");
       } finally {
@@ -25,6 +31,7 @@ const ProductDetailsContainer = () => {
 
     fetchProduct();
   }, [id]);
+console.log("DETAIL PAGE PRODUCT:", product);
 
   if (loading) return <p>Loading product...</p>;
   if (error) return <p>{error}</p>;

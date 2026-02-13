@@ -28,20 +28,31 @@ const FeaturedProducts = () => {
   // ✅ Loading & error states
   if (loading) return <p>Loading featured products...</p>;
   if (error) return <p>{error}</p>;
+return (
+  <section className="bg-gray-50 py-20">
+    <div className="max-w-7xl mx-auto px-6 space-y-12">
 
-  return (
-    <div className="px-6 py-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Featured Products
-      </h2>
+      {/* Section Header */}
+      <div className="text-center space-y-3">
+        <h2 className="text-3xl font-semibold text-gray-900">
+          Featured Products
+        </h2>
+        <p className="text-gray-500 text-sm">
+          Discover our most popular picks
+        </p>
+      </div>
 
-      <div className="grid grid-cols-4 gap-6">
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
+
     </div>
-  );
+  </section>
+);
+
 };
 
 export default FeaturedProducts;

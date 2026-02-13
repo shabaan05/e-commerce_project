@@ -51,63 +51,119 @@ useEffect(() => {
     }
   };
 
-  return (
-    <div>
-      <h1>Create Product</h1>
+ return (
+  <div className="bg-gray-50 min-h-screen py-16">
+    <div className="max-w-3xl mx-auto px-6 space-y-10">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          name="name"
-          placeholder="Product Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-        />
+      {/* Page Title */}
+      <h1 className="text-3xl font-semibold text-gray-900">
+        Create Product
+      </h1>
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleChange}
-          required
-        />
+      {/* Form Card */}
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-        <input
-          name="category"
-          placeholder="Category ID"
-          value={form.category}
-          onChange={handleChange}
-          required
-        />
+          {/* Product Name */}
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Product Name
+            </label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
 
-        <input
-          type="number"
-          name="countInStock"
-          placeholder="Stock Quantity"
-          value={form.countInStock}
-          onChange={handleChange}
-          required
-        />
+          {/* Price */}
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Price
+            </label>
+            <input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
 
-        <input
-          name="image"
-          placeholder="Image URL"
-          value={form.image}
-          onChange={handleChange}
-        />
+          {/* Category */}
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Category ID
+            </label>
+            <input
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-        />
+          {/* Stock */}
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Stock Quantity
+            </label>
+            <input
+              type="number"
+              name="countInStock"
+              value={form.countInStock}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
 
-        <button type="submit">Create Product</button>
-      </form>
+          {/* Image */}
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Image URL
+            </label>
+            <input
+              name="image"
+              value={form.image}
+              onChange={handleChange}
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              rows="4"
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg shadow-sm transition duration-300"
+          >
+            Create Product
+          </button>
+
+        </form>
+      </div>
+
     </div>
-  );
+  </div>
+);
+
 };
 
 export default CreateProduct;

@@ -26,49 +26,72 @@ const ShippingForm = ({ onSaved }) => {
     onSaved(); // close form / show saved address
   };
 
-  return (
-    <div className="border p-4">
+ return (
+  <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+
+    {/* Street */}
+    <div>
+      <label className="block text-sm text-gray-500 mb-2">
+        Street
+      </label>
       <input
         name="street"
-        placeholder="Street"
         value={formData.street}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
       />
+    </div>
 
+    {/* City */}
+    <div>
+      <label className="block text-sm text-gray-500 mb-2">
+        City
+      </label>
       <input
         name="city"
-        placeholder="City"
         value={formData.city}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
       />
+    </div>
 
+    {/* Country */}
+    <div>
+      <label className="block text-sm text-gray-500 mb-2">
+        Country
+      </label>
       <input
         name="country"
-        placeholder="Country"
         value={formData.country}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
       />
+    </div>
 
+    {/* Phone */}
+    <div>
+      <label className="block text-sm text-gray-500 mb-2">
+        Phone
+      </label>
       <input
         name="phone"
-        placeholder="Phone"
         value={formData.phone}
         onChange={handleChange}
-        className="border p-2 w-full mb-4"
+        className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
       />
-
-      {/* ✅ SAVE BUTTON */}
-      <button
-        onClick={handleSave}
-        className="bg-black text-white px-4 py-2"
-      >
-        Save Address
-      </button>
     </div>
-  );
+
+    {/* Save Button */}
+    <button
+      onClick={handleSave}
+      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg shadow-sm transition duration-300"
+    >
+      Save Address
+    </button>
+
+  </div>
+);
+
 };
 
 export default ShippingForm;

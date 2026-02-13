@@ -8,21 +8,29 @@ const Categories = () => {
   if (loading) return <p>Loading categories...</p>;
   if (error) return <p>{error}</p>;
 
-  return (
-    <div className="px-6 py-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Categories
-      </h2>
+return (
+  <section className="bg-white py-8">
+    <div className="max-w-6xl mx-auto px-6 space-y-2">
 
-      <div className="grid grid-cols-3 gap-6">
+      {/* Scroll Container */}
+      <div className="flex gap-6 overflow-x-auto scrollbar-hide">
+
         {categories.map((cat) => (
-          <CategoryCard key={cat._id} name={cat.name} 
-            link={`/shop?category=${cat._id}`}
-/>
+          <div key={cat._id} className="min-w-[200px] flex-shrink-0">
+            <CategoryCard
+              name={cat.name}
+              link={`/shop?category=${cat._id}`}
+            />
+          </div>
         ))}
+
       </div>
+
     </div>
-  );
+  </section>
+);
+
+
 };
 
 export default Categories;

@@ -25,22 +25,35 @@ const ProductInfo = ({ product }) => {
    
   
 
-  return (
-    <div className="w-1/2 space-y-4">
-      <h1 className="text-2xl font-bold">{product?.name}</h1>
-      <p className="text-xl">₹{product?.price}</p>
+ //..
+ return (
+  <div className="w-full md:w-1/2 space-y-6">
 
-    
-  <button
-        onClick={handleAddToCart}
-        className={`mt-4 px-6 py-2 rounded text-white ${
-          added ? "bg-green-600" : "bg-blue-600"
-        }`}
-      >
-        {added ? "Added ✓" : "Add to Cart"}
-      </button>
-    </div>
-  );
+    {/* Product Name */}
+    <h1 className="text-3xl font-semibold text-gray-900">
+      {product?.name}
+    </h1>
+
+    {/* Price */}
+    <p className="text-2xl font-semibold text-blue-600">
+      ₹{product?.price}
+    </p>
+
+    {/* Add to Cart Button */}
+    <button
+      onClick={handleAddToCart}
+      className={`mt-4 px-8 py-3 rounded-lg text-white font-medium shadow-sm transition duration-300 ${
+        added
+          ? "bg-green-600 hover:bg-green-700"
+          : "bg-blue-600 hover:bg-blue-700"
+      }`}
+    >
+      {added ? "Added ✓" : "Add to Cart"}
+    </button>
+
+  </div>
+);
+
 };
 
 export default ProductInfo;

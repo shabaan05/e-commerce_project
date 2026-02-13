@@ -42,11 +42,15 @@ const PaymentAction = ({ totalAmount }) => {
     }
   };
 
-  return (
-    <button onClick={handlePayment}>
-      Proceed to Payment
-    </button>
-  );
+ return (
+  <button
+    onClick={handlePayment}
+    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg shadow-sm transition duration-300"
+  >
+    Proceed to Payment
+  </button>
+);
+
 };
 
 export default PaymentAction;

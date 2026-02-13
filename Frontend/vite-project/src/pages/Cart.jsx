@@ -1,19 +1,17 @@
-// pages/Cart.jsx
 
 import CartContainer from "../component/cart/CartContainer";
 
 const Cart = () => {
   return (
-    <div>
-     
+  <div className="bg-gray-50 min-h-screen py-16">
 
-      <main className="max-w-6xl mx-auto p-4">
-        <CartContainer />
-      </main>
+    <main className="max-w-6xl mx-auto px-6">
+      <CartContainer />
+    </main>
 
-     
-    </div>
-  );
+  </div>
+);
+
 };
 
 export default Cart;

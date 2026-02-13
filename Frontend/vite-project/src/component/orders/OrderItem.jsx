@@ -25,52 +25,76 @@
 
 // export default OrderItem;
 const OrderItem = ({ order }) => {
-  return (
-    <div className="border p-4 rounded shadow-sm bg-white">
-      <div className="flex justify-between">
-        <div>
-          <p className="font-semibold">Order ID:</p>
-          <p className="text-sm text-gray-600">{order._id}</p>
-        </div>
+return (
+  <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
 
-        <div className="text-right">
-          <p className="font-semibold">Total:</p>
-          <p>₹{order.totalAmount}</p>
-        </div>
+    {/* Top Section */}
+    <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+
+      <div>
+        <p className="text-sm text-gray-500">Order ID</p>
+        <p className="font-medium text-gray-900 break-all">
+          {order._id}
+        </p>
       </div>
 
-      <div className="mt-4 flex justify-between">
-        <p>
-          Payment Status:{" "}
-          <span className={`font-semibold ${
+      <div className="sm:text-right">
+        <p className="text-sm text-gray-500">Total</p>
+        <p className="text-lg font-semibold text-blue-600">
+          ₹{order.totalAmount}
+        </p>
+      </div>
+
+    </div>
+
+    {/* Status Section */}
+    <div className="flex flex-col sm:flex-row sm:justify-between gap-4 text-sm">
+
+      <p>
+        <span className="text-gray-500">Payment Status:</span>{" "}
+        <span
+          className={`font-semibold ${
             order.paymentStatus === "paid"
               ? "text-green-600"
               : "text-red-600"
-          }`}>
-            {order.paymentStatus}
-          </span>
-        </p>
+          }`}
+        >
+          {order.paymentStatus}
+        </span>
+      </p>
 
-        <p>
-          Order Status:{" "}
-          <span className="font-semibold text-blue-600">
-            {order.orderStatus || "pending"}
-          </span>
-        </p>
-      </div>
+      <p>
+        <span className="text-gray-500">Order Status:</span>{" "}
+        <span className="font-semibold text-blue-600 capitalize">
+          {order.orderStatus || "pending"}
+        </span>
+      </p>
 
-      <div className="mt-4">
-        <p className="font-semibold mb-2">Items:</p>
-        <ul className="list-disc list-inside text-sm text-gray-700">
-          {order.items.map((item, index) => (
-            <li key={index}>
-              {item.quantity} × ₹{item.price}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
-  );
+
+    {/* Items Section */}
+    <div>
+      <p className="text-sm font-medium text-gray-900 mb-3">
+        Items
+      </p>
+
+      <ul className="space-y-2 text-sm text-gray-600">
+        {order.items.map((item, index) => (
+          <li
+            key={index}
+            className="flex justify-between border-b border-gray-100 pb-2"
+          >
+            <span>
+              {item.quantity} × ₹{item.price}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+  </div>
+);
+
 };
 
 export default OrderItem;

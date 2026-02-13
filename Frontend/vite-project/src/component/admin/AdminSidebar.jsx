@@ -1,46 +1,60 @@
 import { Link } from "react-router-dom";
 
 const AdminSidebar = () => {
-  return (
-    <aside
-      style={{
-        width: "120px",
-        padding: "20px",
-        backgroundColor: "#111",
-        color: "#fff",
-      }}
-    >
-      <h2>Admin sidebar</h2>
+return (
+  <aside className="w-64 min-h-screen bg-white border-r border-gray-200 p-6">
 
-      <nav>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li>
-            <Link to="/admin" style={{ color: "#fff" }}>
-              Dashboard
-            </Link>
-          </li>
+    {/* Title */}
+    <h2 className="text-xl font-semibold text-gray-900 mb-8">
+      Admin Panel
+    </h2>
 
-          <li>
-            <Link to="/admin/products" style={{ color: "#fff" }}>
-              Products
-            </Link>
-          </li>
+    {/* Navigation */}
+    <nav>
+      <ul className="space-y-4">
 
-          <li>
-            <Link to="/admin/orders" style={{ color: "#fff" }}>
-              Orders
-            </Link>
-          </li>
+        <li>
+          <Link
+            to="/admin"
+            className="block text-gray-700 hover:text-blue-600 font-medium transition"
+          >
+            Dashboard
+          </Link>
+        </li>
 
-          <li>
-            <Link to="/admin/users" style={{ color: "#fff" }}>
-              Users
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-  );
+        <li>
+          <Link
+            to="/admin/products"
+            className="block text-gray-700 hover:text-blue-600 font-medium transition"
+          >
+            Products
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to="/admin/orders"
+            className="block text-gray-700 hover:text-blue-600 font-medium transition"
+          >
+            Orders
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to="/admin/users"
+            className="block text-gray-700 hover:text-blue-600 font-medium transition"
+          >
+            Users
+          </Link>
+        </li>
+
+      </ul>
+    </nav>
+
+  </aside>
+);
+
 };
 
 export default AdminSidebar;

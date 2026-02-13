@@ -45,7 +45,14 @@ const OrderContainer = () => {
   if (error) return <p className="text-red-600">{error}</p>;
   if (!orders.length) return <p>No orders found.</p>;
 
-  return <OrderList orders={orders} />;
+return (
+  <div className="bg-gray-50 min-h-screen py-16">
+    <div className="max-w-5xl mx-auto px-6">
+      <OrderList orders={orders} />
+    </div>
+  </div>
+);
+
 };
 
 export default OrderContainer;

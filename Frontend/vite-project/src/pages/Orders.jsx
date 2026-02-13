@@ -2,11 +2,8 @@
 import OrdersContainer from "../component/orders/OrdersContainer";
 
 const Orders = () => {
-  return (
-    <>
-      <OrdersContainer />
-    </>
-  );
+ return <OrdersContainer />;
+
 };
 
 export default Orders;

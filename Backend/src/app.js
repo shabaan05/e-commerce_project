@@ -22,7 +22,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://shopcart05.netlify.app",
+      "https://shopcart051.netlify.app",
+
     ],
     credentials: true,
   })

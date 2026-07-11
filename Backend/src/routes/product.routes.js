@@ -1,4 +1,5 @@
 const express = require("express");
+const upload = require("../middlewares/upload");
 const {
   getAllProducts,
   getProductById,
@@ -11,6 +12,11 @@ const router = express.Router();
 router.get("/", getAllProducts);
 router.get("/:id", getProductById);
 // PROTECTED route → only logged-in users
-router.post("/", protect,admin, createProduct);
-
+router.post(
+  "/",
+  protect,
+  admin,
+  upload.single("image"),
+  createProduct
+);
 module.exports = router;

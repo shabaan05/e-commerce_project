@@ -10,4 +10,10 @@ const productSchema = new mongoose.Schema({
   category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
 }, { timestamps: true });
 
+productSchema.index({ name: "text" });
+productSchema.index({ category: 1 });
+productSchema.index({ price: 1 });
+productSchema.index({ createdAt: -1 });
+
+
 module.exports = mongoose.model("Product", productSchema);

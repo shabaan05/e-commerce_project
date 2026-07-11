@@ -10,21 +10,25 @@ const orderRoutes = require("./routes/order.routes");
 const paymentRoutes = require("./routes/payment.routes");
 const userRoutes = require("./routes/user.routes");
 const adminRoutes = require("./routes/admin.routes");
+const limiter = require("./middlewares/rateLimiter");
 const cors = require("cors");
 require("dotenv").config({ path: "../.env" });
-
+const helmet = require("helmet");
+app.use(helmet());
 // Allow frontend running on port 3000 (React/Vite)
 app.use(cors({ origin: "http://localhost:5173" }));
 
 // middleware to parse JSON
 app.use(express.json());
+//rate limiter
+app.use(limiter);
 // logger middleware
 app.use(logger);
 // health check route
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
-app.use("/api/auth", authRoutes);
+app.use("/api/auth",limiter,  authRoutes);
 app.use("/api/products", productRoutes);
 //..
 app.use("/api/categories", categoryRoutes);

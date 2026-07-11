@@ -38,10 +38,16 @@ const orderSchema = new mongoose.Schema(
     paymentStatus: {
       type: String,
       default: "pending",
-      enum: ["pending", "paid", "failed"], // ✅ restrict to allowed values
+      enum: ["pending", "paid", "failed"], 
     },
   },
   { timestamps: true }
 );
+
+orderSchema.index({ user: 1 });
+
+orderSchema.index({ createdAt: -1 });
+
+orderSchema.index({ orderStatus: 1 });
 
 module.exports = mongoose.model("Order", orderSchema);

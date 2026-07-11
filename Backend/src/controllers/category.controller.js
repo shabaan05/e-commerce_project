@@ -1,39 +1,32 @@
 const Category = require("../models/category.model");
 const categories = require("../data/categories");
-const createCategory = async (req, res, next) => {
-  try {
-    const { name } = req.body;
+const asyncHandler = require("../utils/asyncHandler");
+const AppError = require("../utils/AppError");
 
-    if (!name) {
-      return res.status(400).json({ message: "Category name is required" });
-    }
+const createCategory = asyncHandler(async (req, res) => {
+  const { name } = req.body;
 
-    const existing = await Category.findOne({ name });
-    if (existing) {
-      return res.status(400).json({ message: "Category already exists" });
-    }
+  if (!name) throw new AppError("Category name is required", 400);
 
-    const category = await Category.create({ name });
-    res.status(201).json(category);
+  const existing = await Category.findOne({ name });
+  if (existing) throw new AppError("Category already exists", 400);
 
-  } catch (error) {
-    next(error);
-  }
-};
-//..
-const getAllCategories = async (req, res, next) => {
-  try {
-    const categories = await Category.find();
-    res.status(200).json(categories);
-  } catch (error) {
-    next(error);
-  }
-};
-//..
-exports.getCategories = (req, res) => {
+  const category = await Category.create({ name });
+  res.status(201).json(category);
+});
+
+const getAllCategories = asyncHandler(async (req, res) => {
+  const cats = await Category.find();
+  res.status(200).json(cats);
+});
+
+// Static data endpoint (preserved from original)
+const getCategories = (req, res) => {
   res.status(200).json(categories);
 };
+
 module.exports = {
   createCategory,
-  getAllCategories
+  getAllCategories,
+  getCategories,
 };

@@ -16,7 +16,17 @@ require("dotenv").config({ path: "../.env" });
 const helmet = require("helmet");
 app.use(helmet());
 // Allow frontend running on port 3000 (React/Vite)
-app.use(cors({ origin: "http://localhost:5173" }));
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://shopcart05.netlify.app",
+    ],
+    credentials: true,
+  })
+);
 
 // middleware to parse JSON
 app.use(express.json());

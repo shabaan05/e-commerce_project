@@ -18,13 +18,20 @@ app.use(helmet());
 // Allow frontend running on port 3000 (React/Vite)
 const cors = require("cors");
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://shopcart051.netlify.app",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://shopcart051.netlify.app",
-
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );

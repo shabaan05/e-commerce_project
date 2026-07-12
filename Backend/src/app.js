@@ -14,9 +14,11 @@ const limiter = require("./middlewares/rateLimiter");
 const cors = require("cors");
 require("dotenv").config({ path: "../.env" });
 const helmet = require("helmet");
+
+app.set("trust proxy", 1);
+
 app.use(helmet());
 // Allow frontend running on port 3000 (React/Vite)
-const cors = require("cors");
 
 const allowedOrigins = [
   "http://localhost:5173",

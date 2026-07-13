@@ -1,6 +1,7 @@
 const Product = require("../models/product.model");
 const asyncHandler = require("../utils/asyncHandler");
 const AppError = require("../utils/AppError");
+const cloudinary = require("../config/cloudinary");
 
 // GET all products + category filter
 const getAllProducts = asyncHandler(async (req, res) => {
@@ -87,19 +88,44 @@ const getProductById = asyncHandler(async (req, res) => {
 
 // POST create product (admin only)
 const createProduct = asyncHandler(async (req, res) => {
+  // Temporary debug logging — safe to remove after confirming fix
+  // console.log("CREATE PRODUCT req.body:", req.body);
+  // console.log("CREATE PRODUCT req.file:", req.file ? req.file.originalname : "no file");
+console.log("req.body =", req.body);
+console.log("countInStock =", req.body.countInStock);
+console.log("price =", req.body.price);
   const { name, price, category, countInStock, description } = req.body;
 
-  if (!name || !price || !category || countInStock === undefined) {
-    throw new AppError("Name, price, category & stock are required", 400);
+  if (!name || !price || !category || countInStock === undefined || countInStock === "") {
+    throw new AppError(
+      `Missing required fields. Received: name=${name}, price=${price}, category=${category}, countInStock=${countInStock}`,
+      400
+    );
+  }
+
+  // Upload image buffer to Cloudinary if a file was provided
+  let imageUrl = "";
+  if (req.file) {
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "ecommerce-products" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+    imageUrl = result.secure_url;
   }
 
   const product = await Product.create({
     name,
-    price,
+    price: Number(price),
     category,
-    countInStock,
+    countInStock: Number(countInStock),
     description: description || "",
-    images: req.file ? [req.file.path] : [],
+    images: imageUrl ? [imageUrl] : [],
   });
 
   res.status(201).json(product);

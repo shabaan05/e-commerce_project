@@ -3,22 +3,15 @@ const Order = require("../models/order.model");
 const Product = require("../models/product.model");
 const asyncHandler = require("../utils/asyncHandler");
 const AppError = require("../utils/AppError");
+const dashboardService = require("../services/dashboard.service");
 
 // DASHBOARD STATS
 exports.getDashboardStats = asyncHandler(async (req, res) => {
-  const totalUsers = await User.countDocuments({});
-  const totalOrders = await Order.countDocuments({});
-  const totalProducts = await Product.countDocuments({});
+  const dashboard = await dashboardService.getDashboardStats();
 
-  const revenue = await Order.aggregate([
-    { $match: { paymentStatus: "paid" } },
-    { $group: { _id: null, total: { $sum: "$totalAmount" } } },
-  ]);
-
-  res.json({
-    users: totalUsers,
-    orders: totalOrders,
-    products: totalProducts,
+  res.status(200).json({
+    success: true,
+    data: dashboard,
   });
 });
 

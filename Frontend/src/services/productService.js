@@ -23,18 +23,21 @@ export const getProductById = async (id) => {
     return null;
   }
 };
+//..
+// export const createProduct = (formData) => {
+//   return adminApi.post("/products", formData);
+// };
+// export const createProduct = async (form) => {
+//   const formData = new FormData();
 
-export const createProduct = async (form) => {
-  const formData = new FormData();
+//   formData.append("name", form.name);
+//   formData.append("price", form.price);
+//   formData.append("category", form.category);
+//   formData.append("countInStock", form.countInStock);
+//   formData.append("description", form.description);
+//   formData.append("image", form.image);
 
-  formData.append("name", form.name);
-  formData.append("price", form.price);
-  formData.append("category", form.category);
-  formData.append("countInStock", form.countInStock);
-  formData.append("description", form.description);
-  formData.append("image", form.image);
+//   const response = await api.post("/products", formData);
 
-  const response = await api.post("/products", formData);
-
-  return response.data;
-};
+//   return response.data;
+// };

@@ -32,19 +32,19 @@ const Login = () => {
     try {
       setLoading(true);
 
-      // 1️⃣ Call backend login API
+      // 1️ Call backend login API
       const data = await loginService({
         email: formData.email,
         password: formData.password,
       });
 
-      // 2️⃣ Update global auth state
+      // 2 Update global auth state
       // login(data.user, data.token);
            login(data);
 
       setSuccess("Login successful");
          console.log("successful")
-      // 3️⃣ Redirect user back (checkout / profile / home)
+      // 3️ Redirect user back (checkout / profile / home)
       const redirectTo = location.state?.from?.pathname || "/";
       navigate(redirectTo, { replace: true });
 

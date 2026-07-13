@@ -51,22 +51,37 @@ const handleChange = (e) => {
   }
 };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      setLoading(true);
-      await createProduct(form);
-      alert("Product created successfully");
-      localStorage.removeItem("createProductForm"); 
-      navigate("/admin/products");
-    } catch (error) {
-      alert("Failed to create product");
-      console.error(error);
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+
+    const formData = new FormData();
+
+    formData.append("name", form.name);
+    formData.append("price", form.price);
+    formData.append("category", form.category);
+    formData.append("countInStock", form.countInStock);
+    formData.append("description", form.description);
+
+    if (form.image) {
+      formData.append("image", form.image);
     }
-  };
+console.log(form);
+console.log(formData)
+    await createProduct(formData);
+
+    alert("Product created successfully");
+    localStorage.removeItem("createProductForm");
+    navigate("/admin/products");
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Failed to create product");
+  } finally {
+    setLoading(false);
+  }
+};
 
  return (
   <div className="bg-gray-50 min-h-screen py-16">

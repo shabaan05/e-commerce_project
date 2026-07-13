@@ -25,9 +25,7 @@ adminApi.interceptors.request.use((config) => {
   return config;
 });
 
-// these are functions in admin controllers file which we connect via services 
-// export const getAdminDashboardStats = () =>
-//   adminApi.get("/dashboard");
+
 export const getDashboardStats = async () => {
   const res = await adminApi.get("/dashboard");
   return res.data.data;

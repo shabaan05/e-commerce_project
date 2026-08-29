@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllOrders, updateOrderStatus } from "../../services/adminApi";
 import TableSkeleton from "../../component/skeletons/TableSkeleton";
+import { formatPrice } from "../../lib/formatPrice";
 
 const ManageOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -64,7 +65,7 @@ const ManageOrders = () => {
                 {order.user?.name} <br />
                 {order.user?.email}
               </td>
-              <td>₹ {order.totalPrice}</td>
+              <td>{formatPrice(order.totalPrice)}</td>
               <td>{order.status}</td>
               <td>
                 <select

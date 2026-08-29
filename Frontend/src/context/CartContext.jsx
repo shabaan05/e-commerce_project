@@ -66,9 +66,10 @@ console.log("Product:", product);
 
   // Update quantity
 const updateQty = (id, qty) => {
+  const safeQty = Math.max(1, Number(qty) || 1);
   setCartItems(
     cartItems.map((item) =>
-      item.id === id ? { ...item, qty } : item
+      item.id === id ? { ...item, qty: safeQty } : item
     )
   );
 };

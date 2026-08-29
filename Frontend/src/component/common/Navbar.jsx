@@ -20,8 +20,9 @@ import {
 
 
 const Navbar = () => {
-  const { user, logout } = useAuth(); 
-const cartItems = useCart();
+  const { user, logout } = useAuth();
+  const { cartItems } = useCart();
+  const cartCount = cartItems.reduce((count, item) => count + item.qty, 0);
  
 //..
 return (
@@ -57,9 +58,9 @@ return (
             className="relative text-sm font-medium text-gray-700 hover:text-blue-600 transition"
           >
             Cart
-            {cartItems.length > 0 && (
+            {cartCount > 0 && (
               <span className="absolute -top-2 -right-4 bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">
-                {cartItems.length}
+                {cartCount}
               </span>
             )}
           </Link>

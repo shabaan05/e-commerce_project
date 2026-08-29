@@ -12,7 +12,7 @@ const userRoutes = require("./routes/user.routes");
 const adminRoutes = require("./routes/admin.routes");
 const limiter = require("./middlewares/rateLimiter");
 const cors = require("cors");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 const helmet = require("helmet");
 
 app.set("trust proxy", 1);

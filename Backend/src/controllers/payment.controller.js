@@ -1,19 +1,23 @@
-const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Order = require("../models/order.model");
 const asyncHandler = require("../utils/asyncHandler");
 const AppError = require("../utils/AppError");
+const {
+  getRazorpayInstance,
+  getRazorpayKeyId,
+} = require("../config/razorpay");
 
 const createOrder = asyncHandler(async (req, res) => {
-  const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  });
-
+  const razorpay = getRazorpayInstance();
   const { amount } = req.body;
 
+  const numericAmount = Number(amount);
+  if (!numericAmount || numericAmount <= 0) {
+    throw new AppError("Invalid payment amount", 400);
+  }
+
   const order = await razorpay.orders.create({
-    amount: amount * 100,
+    amount: Math.round(numericAmount * 100),
     currency: "INR",
     receipt: `receipt_${Date.now()}`,
   });
@@ -23,6 +27,7 @@ const createOrder = asyncHandler(async (req, res) => {
     orderId: order.id,
     amount: order.amount,
     currency: order.currency,
+    keyId: getRazorpayKeyId(),
   });
 });
 
@@ -32,42 +37,68 @@ const verifyPayment = asyncHandler(async (req, res) => {
     razorpay_order_id,
     razorpay_payment_id,
     razorpay_signature,
-    orderId, // our DB order ID
+    orderId,
   } = req.body;
 
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+    throw new AppError("Missing Razorpay payment details", 400);
+  }
+
+  if (!orderId) {
+    throw new AppError("Missing ShopCart order ID", 400);
+  }
+
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  if (!keySecret) {
+    throw new AppError("Razorpay secret is not configured", 500);
+  }
+
+  const body = `${razorpay_order_id}|${razorpay_payment_id}`;
 
   const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .createHmac("sha256", keySecret)
     .update(body)
     .digest("hex");
 
-  if (expectedSignature === razorpay_signature) {
-    await Order.findByIdAndUpdate(orderId, {
+  if (expectedSignature !== razorpay_signature) {
+    console.error("Razorpay signature mismatch for order:", orderId);
+    return res.status(400).json({
+      success: false,
+      message: "Payment verification failed. Invalid signature.",
+    });
+  }
+
+  const updatedOrder = await Order.findByIdAndUpdate(
+    orderId,
+    {
       razorpayOrderId: razorpay_order_id,
       razorpayPaymentId: razorpay_payment_id,
       paymentStatus: "paid",
-    });
+    },
+    { new: true }
+  );
 
-    return res.json({
-      success: true,
-      message: "Payment verified and order updated",
-    });
-  } else {
-    throw new AppError("Invalid signature", 400);
+  if (!updatedOrder) {
+    throw new AppError("ShopCart order not found", 404);
   }
+
+  return res.json({
+    success: true,
+    message: "Payment verified and order updated",
+    orderId: updatedOrder._id,
+  });
 });
 
 const createOrderInDB = asyncHandler(async (req, res) => {
-  const { items, totalAmount, userId } = req.body;
+  const { items, totalAmount, shippingAddress } = req.body;
 
   const order = await Order.create({
-    user: req.user.id, // 🔥 safer
+    user: req.user.id,
     items,
     totalAmount,
+    shippingAddress,
     paymentStatus: "pending",
   });
-  console.log("Incoming body:", req.body);
 
   res.status(201).json(order);
 });

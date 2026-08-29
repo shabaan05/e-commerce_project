@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { formatPrice } from "../../lib/formatPrice";
 
 const TopProducts = ({ products = [] }) => {
   return (
@@ -63,7 +64,7 @@ const TopProducts = ({ products = [] }) => {
                   </h3>
 
                   <p className="text-sm text-gray-500">
-                    ₹{product.price?.toLocaleString()}
+                    {formatPrice(product.price)}
                   </p>
 
                 </div>

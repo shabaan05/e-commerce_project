@@ -28,6 +28,15 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    shippingAddress: {
+      fullName: String,
+      phone: String,
+      street: String,
+      city: String,
+      state: String,
+      pincode: String,
+      country: String,
+    },
     razorpayOrderId: String,
   razorpayPaymentId: String,
    orderStatus: {

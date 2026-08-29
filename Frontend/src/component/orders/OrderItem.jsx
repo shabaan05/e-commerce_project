@@ -24,6 +24,8 @@
 // };
 
 // export default OrderItem;
+import { formatPrice } from "../../lib/formatPrice";
+
 const OrderItem = ({ order }) => {
 return (
   <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
@@ -41,7 +43,7 @@ return (
       <div className="sm:text-right">
         <p className="text-sm text-gray-500">Total</p>
         <p className="text-lg font-semibold text-blue-600">
-          ₹{order.totalAmount}
+          {formatPrice(order.totalAmount)}
         </p>
       </div>
 
@@ -78,17 +80,36 @@ return (
         Items
       </p>
 
-      <ul className="space-y-2 text-sm text-gray-600">
-        {order.items.map((item, index) => (
-          <li
-            key={index}
-            className="flex justify-between border-b border-gray-100 pb-2"
-          >
-            <span>
-              {item.quantity} × ₹{item.price}
-            </span>
-          </li>
-        ))}
+      <ul className="space-y-4">
+        {order.items.map((item, index) => {
+          const product = item.product;
+          const imageSrc = product?.images?.[0] || "/placeholder.png";
+          const name = product?.name || "Product unavailable";
+
+          return (
+            <li
+              key={item._id || index}
+              className="flex items-center gap-4 border-b border-gray-100 pb-4 last:border-b-0 last:pb-0"
+            >
+              <img
+                src={imageSrc}
+                alt={name}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border border-gray-200 bg-gray-100 shrink-0"
+              />
+
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-gray-900 truncate">{name}</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Qty: {item.quantity} · {formatPrice(item.price)} each
+                </p>
+              </div>
+
+              <p className="text-sm sm:text-base font-semibold text-blue-600 shrink-0">
+                {formatPrice(item.quantity * item.price)}
+              </p>
+            </li>
+          );
+        })}
       </ul>
     </div>
 

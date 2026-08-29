@@ -1,7 +1,8 @@
 import React from "react";
-import { useCart } from "../../context/CartContext"; // adjust path if needed
+import { useCart } from "../../context/CartContext";
 import { useState } from "react";
 import Spinner from "../skeletons/Spinner";
+import { formatPrice } from "../../lib/formatPrice";
 
 const ProductInfo = ({ product }) => {
   const { addToCart } = useCart();
@@ -14,7 +15,7 @@ const ProductInfo = ({ product }) => {
       id: product._id,
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: product.images?.[0] || product.image,
     });
 
     // Brief visual feedback: show "Adding…" then "Added ✓"
@@ -37,7 +38,7 @@ const ProductInfo = ({ product }) => {
 
       {/* Price */}
       <p className="text-2xl font-semibold text-blue-600">
-        ₹{product?.price}
+        {formatPrice(product?.price)}
       </p>
 
       {/* Add to Cart Button */}

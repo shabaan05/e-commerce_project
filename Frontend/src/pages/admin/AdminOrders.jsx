@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
 import OrderSkeleton from "../../component/skeletons/OrderSkeleton";
+import { formatPrice } from "../../lib/formatPrice";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -63,7 +64,7 @@ const AdminOrders = () => {
               <div className="sm:text-right">
                 <p className="text-sm text-gray-500">Total</p>
                 <p className="text-lg font-semibold text-blue-600">
-                  ₹{order.totalAmount}
+                  {formatPrice(order.totalAmount)}
                 </p>
               </div>
 

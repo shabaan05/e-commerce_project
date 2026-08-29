@@ -7,12 +7,15 @@ import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../skeletons/Spinner";
 
+const getErrorMessage = (error, fallback) =>
+  error?.response?.data?.message || error?.message || fallback;
+
 const PaymentActions = () => {
-  const { method, setStatus } = useContext(PaymentContext);
-  const { subtotal, cartItems, clearCart } = useCart();
+  const { setStatus } = useContext(PaymentContext);
+  const { subtotal, cartItems, clearCart, shippingAddress } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
 
   const handlePayNow = async () => {
     if (!cartItems.length || subtotal <= 0) {
@@ -20,75 +23,101 @@ const PaymentActions = () => {
       return;
     }
 
+    if (!shippingAddress) {
+      alert("Please select or add a shipping address before paying.");
+      return;
+    }
+
+    if (!window.Razorpay) {
+      alert("Razorpay checkout failed to load. Please refresh and try again.");
+      return;
+    }
+
     try {
       setLoading(true);
-      console.log("Cart Items:", cartItems);
 
-      // 1️⃣ Create DB order first
       const orderRes = await api.post("/payment/create-db-order", {
-
-items: cartItems.map(item => ({
-  product: item.id,      // ✅ correct field
-  quantity: item.qty,    // ✅ correct field
-  price: item.price
-}))
-
-,
-
+        items: cartItems.map((item) => ({
+          product: item.id,
+          quantity: item.qty,
+          price: item.price,
+        })),
         totalAmount: subtotal,
-        // userId: user._id
+        shippingAddress,
       });
 
       const dbOrderId = orderRes.data._id;
+      const razorpayOrder = await createPaymentOrder(subtotal);
 
-      // 2️⃣ Create Razorpay order
-      const data = await createPaymentOrder(subtotal);
+      const razorpayKey =
+        razorpayOrder.keyId || import.meta.env.VITE_RAZORPAY_KEY_ID;
+
+      if (!razorpayKey) {
+        throw new Error(
+          "Razorpay key is missing. Configure VITE_RAZORPAY_KEY_ID or backend RAZORPAY_KEY_ID."
+        );
+      }
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: data.amount,
-        currency: data.currency,
-        name: "My Store",
+        key: razorpayKey,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: "ShopCart",
         description: "Order Payment",
-        order_id: data.orderId,
-
+        order_id: razorpayOrder.orderId,
+        prefill: {
+          name: user?.name || shippingAddress.fullName || "",
+          email: user?.email || "",
+          contact: shippingAddress.phone || "",
+        },
+        theme: {
+          color: "#2563eb",
+        },
         handler: async function (response) {
           try {
             const verifyResponse = await api.post("/payment/verify-payment", {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              orderId: dbOrderId
+              orderId: dbOrderId,
             });
 
-            // if (verifyResponse.data.success) {
-            //   alert("Payment Verified Successfully");
-            // } else {
-            //   alert("Payment Verification Failed");
-            // }
-
-            //..
             if (verifyResponse.data.success) {
-  clearCart();                 // optional but recommended
-  navigate("/order-success");  // redirect
-} else {
-  navigate("/order-failure");
-}
-
-
+              clearCart();
+              navigate("/order-success");
+            } else {
+              navigate("/order-failure");
+            }
           } catch (error) {
-            console.error(error);
-            alert("Verification Error");
+            console.error("Payment verification failed:", error);
+            alert(getErrorMessage(error, "Payment verification failed."));
+            navigate("/order-failure");
           }
-        }
+        },
+        modal: {
+          ondismiss: () => {
+            setStatus("Cancelled");
+          },
+        },
       };
 
       const razorpay = new window.Razorpay(options);
-      razorpay.open();
 
+      razorpay.on("payment.failed", function (response) {
+        console.error("Razorpay payment failed:", response.error);
+        alert(
+          response.error?.description ||
+            "Test payment failed. Please try again."
+        );
+        setStatus("Failed");
+        navigate("/order-failure");
+      });
+
+      razorpay.open();
     } catch (error) {
-      console.error(error);
+      console.error("Payment initiation failed:", error);
       setStatus("Failed");
+      alert(getErrorMessage(error, "Unable to start payment. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -98,7 +127,7 @@ items: cartItems.map(item => ({
     <button
       onClick={handlePayNow}
       disabled={loading}
-      className="mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded disabled:opacity-70 flex items-center gap-2 transition"
+      className="w-full mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg disabled:opacity-70 flex items-center justify-center gap-2 transition"
     >
       {loading ? (
         <>

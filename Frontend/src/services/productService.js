@@ -2,13 +2,12 @@ import api from "./api";
 
 // ✅ Get all products
 export const getProducts = async (categoryId) => {
-  const url = categoryId
-    ? `/products?category=${categoryId}`
-    : "/products";
+  const params = new URLSearchParams({ limit: "100" });
+  if (categoryId) {
+    params.set("category", categoryId);
+  }
 
-  const response = await api.get(url);
-
-  // ✅ RETURN THE ARRAY
+  const response = await api.get(`/products?${params.toString()}`);
   return response.data.products || [];
 };
 

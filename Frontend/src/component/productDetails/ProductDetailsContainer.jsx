@@ -50,6 +50,16 @@ return (
       {/* Top Section */}
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
         <div className="flex flex-col md:flex-row gap-12">
+          <div className="w-full md:w-1/2">
+            <div className="aspect-square overflow-hidden rounded-xl bg-gray-100 border border-gray-200">
+              <img
+                src={product.images?.[0] || "/placeholder.png"}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
           <ProductInfo
             product={product}
             quantity={quantity}

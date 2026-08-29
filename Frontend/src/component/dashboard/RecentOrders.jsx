@@ -1,4 +1,5 @@
 import { Eye } from "lucide-react";
+import { formatPrice } from "../../lib/formatPrice";
 
 const statusColor = (status) => {
   switch (status?.toLowerCase()) {
@@ -105,7 +106,7 @@ const RecentOrders = ({ orders = [] }) => {
                   </td>
 
                   <td className="font-semibold">
-                    ₹{order.totalPrice?.toLocaleString()}
+                    {formatPrice(order.totalPrice)}
                   </td>
 
                   <td>

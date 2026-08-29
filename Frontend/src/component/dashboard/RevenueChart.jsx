@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { formatPrice } from "../../lib/formatPrice";
 
 const monthNames = [
   "",
@@ -54,10 +55,7 @@ const RevenueChart = ({ data = [] }) => {
           <YAxis />
 
           <Tooltip
-            formatter={(value) => [
-              `₹${value.toLocaleString()}`,
-              "Revenue",
-            ]}
+            formatter={(value) => [formatPrice(value), "Revenue"]}
           />
 
           <Line

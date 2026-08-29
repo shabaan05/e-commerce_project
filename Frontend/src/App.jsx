@@ -3,7 +3,7 @@ import Footer from "./component/common/Footer";
 import Navbar from "./component/common/Navbar";
 // Pages
 import Home from "./pages/Home";
-import Shop from "./pages/Shop";
+import ShopContainer from "./component/shop/ShopContainer";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
@@ -35,7 +35,7 @@ function App() {
 
         {/* Public */}
         <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop" element={<ShopContainer />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

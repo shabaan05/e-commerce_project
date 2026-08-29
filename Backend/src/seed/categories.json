@@ -1,7 +1,12 @@
 [
-  { "name": "Electronics", "slug": "electronics" },
-  { "name": "Clothing", "slug": "clothing" },
-  { "name": "Home & Kitchen", "slug": "home-kitchen" },
-  { "name": "Books", "slug": "books" },
-  { "name": "Sports", "slug": "sports" }
+  { "name": "Electronics" },
+  { "name": "Mobiles" },
+  { "name": "Laptops" },
+  { "name": "Fashion" },
+  { "name": "Footwear" },
+  { "name": "Home Appliances" },
+  { "name": "Accessories" },
+  { "name": "Sports & Fitness" },
+  { "name": "Books" },
+  { "name": "Home & Kitchen" }
 ]

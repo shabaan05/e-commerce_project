@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { formatPrice } from "../../lib/formatPrice";
 const ProductCard = ({ product }) => {
 //..
 return (
@@ -28,7 +27,7 @@ return (
 
       {/* Price */}
       <p className="text-xl font-semibold text-blue-600">
-        ${product.price}
+        {formatPrice(product.price)}
       </p>
 
     </div>

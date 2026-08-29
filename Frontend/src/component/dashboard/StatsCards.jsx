@@ -5,6 +5,7 @@ import {
   IndianRupee,
   TrendingUp,
 } from "lucide-react";
+import { formatPrice } from "../../lib/formatPrice";
 
 const StatsCards = ({ stats }) => {
   const cards = [
@@ -34,7 +35,7 @@ const StatsCards = ({ stats }) => {
     },
     {
       title: "Revenue",
-      value: `₹${(stats?.totalRevenue || 0).toLocaleString()}`,
+      value: formatPrice(stats?.totalRevenue || 0),
       icon: IndianRupee,
       color: "text-purple-600",
       bg: "bg-purple-100",
